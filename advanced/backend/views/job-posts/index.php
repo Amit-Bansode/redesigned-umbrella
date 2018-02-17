@@ -26,14 +26,14 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'job_type_id',
+            //'id',
+            //'job_type_id',
             'unique_job_number',
             'job_title',
             'job_description:ntext',
             //'apply_url:url',
-            //'start_date',
-            //'end_date',
+            'start_date',
+            'end_date',
             //'is_published',
             //'is_deleted',
             //'updated_by',

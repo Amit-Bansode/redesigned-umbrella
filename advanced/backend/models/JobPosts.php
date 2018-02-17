@@ -39,11 +39,13 @@ class JobPosts extends \yii\db\ActiveRecord {
      */
     public function rules() {
         return [
-            [['job_type_id', 'job_title', 'job_description', 'apply_url', 'start_date', 'end_date', 'updated_by', 'created_by'], 'required'],
+            [['job_type_id', 'job_title', 'job_description', 'apply_url', 'start_date', 'end_date'], 'required'],
             [['job_type_id', 'is_published', 'is_deleted', 'updated_by', 'created_by'], 'integer'],
-            [['job_description', 'qualification'], 'string'],
+            [['job_description'], 'string'],
             [['start_date', 'end_date', 'updated_on', 'created_on'], 'safe'],
-            [['job_title', 'apply_url'], 'string', 'max' => 250],
+            [['unique_job_number'], 'string', 'max' => 50],
+            [['job_title', 'qualification', 'apply_url'], 'string', 'max' => 250],
+            [['unique_job_number'], 'unique'],
             [['job_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => JobTypes::className(), 'targetAttribute' => ['job_type_id' => 'id']],
         ];
     }
@@ -77,6 +79,20 @@ class JobPosts extends \yii\db\ActiveRecord {
     public function getJobType() {
         return $this->hasOne(JobTypes::className(), ['id' => 'job_type_id']);
     }
-    
 
+    public function beforeSave($insert) {
+        parent::beforeSave($insert);
+        
+        if ($insert) {
+            $this->created_by = Yii::$app->user->id;
+            $this->created_on = date('Y-m-d H:i:s');
+        }
+        
+        $this->start_date = \Yii::$app->common->convertDateFormat( $this->start_date );
+        $this->end_date = \Yii::$app->common->convertDateFormat( $this->end_date );
+        $this->updated_on = date('Y-m-d H:i:s');
+        $this->updated_by = Yii::$app->user->id;
+        
+        return true;
+    }
 }

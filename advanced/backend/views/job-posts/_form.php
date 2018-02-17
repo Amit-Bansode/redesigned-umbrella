@@ -21,19 +21,27 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'job_description')->textarea(['rows' => 6]) ?>
 
     <?= $form->field($model, 'qualification')->textInput(['maxlength' => true]) ?>
-    
+
     <?= $form->field($model, 'apply_url')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'start_date')->textInput() ?>
+    <?=
+    $form->field($model, 'start_date')->widget(yii\jui\DatePicker::classname(), [
+        'options' => ['placeholder' => 'Enter start date', 'dateFormat' => 'd M Y'],        
+    ]);
+    ?>
 
-    <?= $form->field($model, 'end_date')->textInput() ?>
+    <?=
+    $form->field($model, 'end_date')->widget(yii\jui\DatePicker::classname(), [
+        'options' => ['placeholder' => 'Enter end date', 'dateFormat' => 'd M Y'],        
+    ]);
+    ?>
 
-    <?= $form->field($model, 'is_published')->checkbox() ?>
+        <?= $form->field($model, 'is_published')->checkbox() ?>
 
     <div class="form-group">
-        <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
+    <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
     </div>
 
-    <?php ActiveForm::end(); ?>
+<?php ActiveForm::end(); ?>
 
 </div>

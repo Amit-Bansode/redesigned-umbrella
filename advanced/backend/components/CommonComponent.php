@@ -22,12 +22,21 @@ class CommonComponent extends Component {
 
     public function createUniqueJobId($intJobType, $intId = null) {
 
-        if( TRUE == is_null( $intId )) {
+        if (TRUE == is_null($intId)) {
             $objJobPost = \app\models\JobPosts::find()->orderBy(['id' => SORT_DESC])->one();
-            $intId = (true == is_object($objJobPost)) ? $objJobPost->id+1 : 1;
+            $intId = (true == is_object($objJobPost)) ? $objJobPost->id + 1 : 1;
         }
-        
+
         return 'GOVT' . str_pad($intId, 5, 0, STR_PAD_LEFT);
+    }
+    
+    public function convertDateFormat( $strDate, $strDateFormat = 'Y-m-d H:i:s' ) {
+        
+        if( FALSE == strlen($strDate) ) {
+            return NULL;
+        }
+        return date( $strDateFormat, strtotime( $strDate ) );
+        
     }
 
 }

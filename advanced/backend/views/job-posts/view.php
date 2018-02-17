@@ -16,34 +16,38 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a(Yii::t('app', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
+        <?=
+        Html::a(Yii::t('app', 'Delete'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
                 'method' => 'post',
             ],
-        ]) ?>
+        ])
+        ?>
     </p>
 
-    <?= DetailView::widget([
+    <?=
+    DetailView::widget([
         'model' => $model,
         'attributes' => [
             'id',
-            'job_type_id',
+            //'job_type_id',
             'unique_job_number',
             'job_title',
             'job_description:ntext',
             'qualification',
             'apply_url:url',
-            'start_date',
-            'end_date',
+            [ 'label' => $model->getAttributeLabel('start_date'), 'value' => Yii::$app->common->convertDateFormat($model->start_date, 'd M Y')],
+            [ 'label' => $model->getAttributeLabel('end_date'), 'value' => Yii::$app->common->convertDateFormat($model->end_date, 'd M Y')],
             'is_published',
-            'is_deleted',
+            //'is_deleted',
             'updated_by',
             'updated_on',
             'created_by',
             'created_on',
         ],
-    ]) ?>
+    ])
+    ?>
 
 </div>
