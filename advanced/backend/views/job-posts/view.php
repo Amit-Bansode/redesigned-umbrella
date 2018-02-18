@@ -42,7 +42,6 @@ $this->params['breadcrumbs'][] = $this->title;
             [ 'label' => $model->getAttributeLabel('end_date'), 'value' => Yii::$app->common->convertDateFormat($model->end_date, 'd M Y')],
             [ 'label' => $model->getAttributeLabel('is_published'), 'value' => ( true == $model->is_published ) ? 'True' : 'False' ],
             'documents_required',
-            //'is_deleted',
             [ 'label' => $model->getAttributeLabel('updated_by'), 'value' => backend\models\Users::findOne($model->updated_by)->username ],
             'updated_on',
             [ 'label' => $model->getAttributeLabel('created_by'), 'value' => backend\models\Users::findOne($model->created_by)->username ],            

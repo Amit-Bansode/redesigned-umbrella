@@ -1,22 +1,21 @@
 <?php
 
-namespace app\models;
+namespace backend\models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\JobPosts;
+use backend\models\JobPosts;
 
 /**
  * JobPostsSearch represents the model behind the search form of `app\models\JobPosts`.
  */
-class JobPostsSearch extends JobPosts
-{
+class JobPostsSearch extends JobPosts {
+
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['id', 'job_type_id', 'is_published', 'is_deleted', 'updated_by', 'created_by'], 'integer'],
             [['unique_job_number', 'job_title', 'job_description', 'qualification', 'apply_url', 'start_date', 'end_date', 'updated_on', 'created_on'], 'safe'],
@@ -26,8 +25,7 @@ class JobPostsSearch extends JobPosts
     /**
      * @inheritdoc
      */
-    public function scenarios()
-    {
+    public function scenarios() {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
@@ -39,8 +37,7 @@ class JobPostsSearch extends JobPosts
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
-    {
+    public function search($params) {
         $query = JobPosts::find();
 
         // add conditions that should always apply here
@@ -50,12 +47,14 @@ class JobPostsSearch extends JobPosts
         ]);
 
         $this->load($params);
-
-        if (!$this->validate()) {
+        
+        $this->is_deleted = FALSE;
+        
+        /*if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
             return $dataProvider;
-        }
+        }*/
 
         // grid filtering conditions
         $query->andFilterWhere([
@@ -72,11 +71,12 @@ class JobPostsSearch extends JobPosts
         ]);
 
         $query->andFilterWhere(['like', 'unique_job_number', $this->unique_job_number])
-            ->andFilterWhere(['like', 'job_title', $this->job_title])
-            ->andFilterWhere(['like', 'job_description', $this->job_description])
-            ->andFilterWhere(['like', 'qualification', $this->qualification])
-            ->andFilterWhere(['like', 'apply_url', $this->apply_url]);
+                ->andFilterWhere(['like', 'job_title', $this->job_title])
+                ->andFilterWhere(['like', 'job_description', $this->job_description])
+                ->andFilterWhere(['like', 'qualification', $this->qualification])
+                ->andFilterWhere(['like', 'apply_url', $this->apply_url]);
 
         return $dataProvider;
     }
+
 }

@@ -151,8 +151,9 @@ class JobPostsController extends Controller {
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id) {
-        $this->findModel($id)->delete();
-
+        $model = $this->findModel($id);
+        $model->is_deleted = TRUE;
+        $model->save();
         return $this->redirect(['index']);
     }
 

@@ -23,7 +23,7 @@ class CommonComponent extends Component {
     public function createUniqueJobId($intJobType, $intId = null) {
 
         if (TRUE == is_null($intId)) {
-            $objJobPost = \app\models\JobPosts::find()->orderBy(['id' => SORT_DESC])->one();
+            $objJobPost = \backend\models\JobPosts::find()->orderBy(['id' => SORT_DESC])->one();
             $intId = (true == is_object($objJobPost)) ? $objJobPost->id + 1 : 1;
         }
 
