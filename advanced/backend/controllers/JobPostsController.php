@@ -3,8 +3,8 @@
 namespace backend\controllers;
 
 use Yii;
-use app\models\JobPosts;
-use app\models\JobPostsSearch;
+use backend\models\JobPosts;
+use backend\models\JobPostsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -49,8 +49,11 @@ class JobPostsController extends Controller {
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id) {
+        $model = $this->findModel($id);
+        $model->documents_required = \backend\models\DocumentsRequired::getDocumentsByJobPostIds($id);
+        $model->documents_required = implode(', ', $model->documents_required);
         return $this->render('view', [
-                    'model' => $this->findModel($id),
+                    'model' => $model,
         ]);
     }
 
@@ -61,15 +64,33 @@ class JobPostsController extends Controller {
      */
     public function actionCreate() {
         $model = new JobPosts();
-
         $model->unique_job_number = Yii::$app->common->createUniqueJobId(1);
-        
+        $arrMixDocuments = [];
+
+        $arrMixDocuments = $this->getDocuments();
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            $boolsIsView = TRUE;
+            foreach ($model->documents_required AS $intDocumentId) {
+
+                $objcloneDocumentsRequired = new \backend\models\DocumentsRequired();
+                $objcloneDocumentsRequired->document_id = $intDocumentId;
+                $objcloneDocumentsRequired->job_post_id = $model->id;
+
+                if (FALSE == $objcloneDocumentsRequired->save()) {
+                    $boolsIsView = FALSE;
+                    $model->delete();
+                    $model->addError('documents_required', 'Unable to insert documents required.');
+                }
+            }
+            if ($boolsIsView) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
-        
+
         return $this->render('create', [
                     'model' => $model,
+                    'documents' => $arrMixDocuments
         ]);
     }
 
@@ -82,13 +103,43 @@ class JobPostsController extends Controller {
      */
     public function actionUpdate($id) {
         $model = $this->findModel($id);
-
+        $arrMixDocumentsRequired = \backend\models\DocumentsRequired::getDocumentsByJobPostIds($model->id);
+        $boolsIsView = TRUE;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            $arrIntPreviousValues = array_keys($arrMixDocumentsRequired);
+
+            if ( 0 < count($arrIntPreviousValues) && FALSE == \backend\models\DocumentsRequired::deleteAll(['job_post_id' => $model->id])) {
+                $boolsIsView = FALSE;
+                $model->addError('documents_required', 'Failed to update documents.');
+            }
+
+            if (TRUE == $boolsIsView) {
+                foreach ($model->documents_required AS $intDocumentId) {
+
+                    $objcloneDocumentsRequired = new \backend\models\DocumentsRequired();
+                    $objcloneDocumentsRequired->document_id = $intDocumentId;
+                    $objcloneDocumentsRequired->job_post_id = $model->id;
+
+                    if (FALSE == $objcloneDocumentsRequired->save()) {
+                        $boolsIsView = FALSE;
+                        $model->addError('documents_required', 'Unable to insert documents required.');
+                    }
+                }
+            }
+
+            if (TRUE == $boolsIsView) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
         }
+        
+        $model->documents_required = array_keys($arrMixDocumentsRequired);
+
+        $arrMixDocuments = $this->getDocuments();
 
         return $this->render('update', [
                     'model' => $model,
+                    'documents' => $arrMixDocuments,
+//                    'documents_required' => $arrMixDocumentsRequired
         ]);
     }
 
@@ -118,6 +169,16 @@ class JobPostsController extends Controller {
         }
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    }
+
+    private function getDocuments() {
+        $arrMixDocuments = [];
+        $arrObjDocuments = \backend\models\Documents::findAll(['is_published' => TRUE]);
+        foreach ($arrObjDocuments as $objDocument) {
+            $arrMixDocuments[$objDocument->id] = $objDocument->document_name;
+        }
+
+        return $arrMixDocuments;
     }
 
 }

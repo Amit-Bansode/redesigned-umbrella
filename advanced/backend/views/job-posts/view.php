@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\JobPosts */
 
-$this->title = $model->id;
+$this->title = $model->job_title;
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Job Posts'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
@@ -40,11 +40,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'apply_url:url',
             [ 'label' => $model->getAttributeLabel('start_date'), 'value' => Yii::$app->common->convertDateFormat($model->start_date, 'd M Y')],
             [ 'label' => $model->getAttributeLabel('end_date'), 'value' => Yii::$app->common->convertDateFormat($model->end_date, 'd M Y')],
-            'is_published',
+            [ 'label' => $model->getAttributeLabel('is_published'), 'value' => ( true == $model->is_published ) ? 'True' : 'False' ],
+            'documents_required',
             //'is_deleted',
-            'updated_by',
+            [ 'label' => $model->getAttributeLabel('updated_by'), 'value' => backend\models\Users::findOne($model->updated_by)->username ],
             'updated_on',
-            'created_by',
+            [ 'label' => $model->getAttributeLabel('created_by'), 'value' => backend\models\Users::findOne($model->created_by)->username ],            
             'created_on',
         ],
     ])

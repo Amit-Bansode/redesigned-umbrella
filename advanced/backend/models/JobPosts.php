@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models;
+namespace backend\models;
 
 use Yii;
 
@@ -23,10 +23,12 @@ use Yii;
  * @property int $created_by
  * @property string $created_on
  *
+ * @property DocumentsRequired[] $documentsRequireds
  * @property JobTypes $jobType
  */
 class JobPosts extends \yii\db\ActiveRecord {
 
+    public $documents_required;
     /**
      * @inheritdoc
      */
@@ -42,7 +44,7 @@ class JobPosts extends \yii\db\ActiveRecord {
             [['job_type_id', 'job_title', 'job_description', 'apply_url', 'start_date', 'end_date'], 'required'],
             [['job_type_id', 'is_published', 'is_deleted', 'updated_by', 'created_by'], 'integer'],
             [['job_description'], 'string'],
-            [['start_date', 'end_date', 'updated_on', 'created_on'], 'safe'],
+            [['start_date', 'end_date', 'updated_on', 'created_on', 'documents_required'], 'safe'],
             [['unique_job_number'], 'string', 'max' => 50],
             [['job_title', 'qualification', 'apply_url'], 'string', 'max' => 250],
             [['unique_job_number'], 'unique'],
@@ -70,7 +72,15 @@ class JobPosts extends \yii\db\ActiveRecord {
             'updated_on' => Yii::t('app', 'Updated On'),
             'created_by' => Yii::t('app', 'Created By'),
             'created_on' => Yii::t('app', 'Created On'),
+            'documents_required' => Yii::t( 'app', 'Required Documents' )
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDocumentsRequireds() {
+        return $this->hasMany(DocumentsRequired::className(), ['job_post_id' => 'id']);
     }
 
     /**
@@ -82,17 +92,17 @@ class JobPosts extends \yii\db\ActiveRecord {
 
     public function beforeSave($insert) {
         parent::beforeSave($insert);
-        
+
         if ($insert) {
             $this->created_by = Yii::$app->user->id;
             $this->created_on = date('Y-m-d H:i:s');
         }
-        
-        $this->start_date = \Yii::$app->common->convertDateFormat( $this->start_date );
-        $this->end_date = \Yii::$app->common->convertDateFormat( $this->end_date );
+
+        $this->start_date = \Yii::$app->common->convertDateFormat($this->start_date);
+        $this->end_date = \Yii::$app->common->convertDateFormat($this->end_date);
         $this->updated_on = date('Y-m-d H:i:s');
         $this->updated_by = Yii::$app->user->id;
-        
+
         return true;
     }
 }

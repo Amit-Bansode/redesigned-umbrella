@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use dosamigos\ckeditor\CKEditor;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\JobPosts */
@@ -18,7 +19,12 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'job_title')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'job_description')->textarea(['rows' => 6]) ?>
+    <?=
+    $form->field($model, 'job_description')->widget(CKEditor::className(), [
+        'options' => ['rows' => 6],
+        
+    ])
+    ?>
 
     <?= $form->field($model, 'qualification')->textInput(['maxlength' => true]) ?>
 
@@ -26,15 +32,17 @@ use yii\widgets\ActiveForm;
 
     <?=
     $form->field($model, 'start_date')->widget(yii\jui\DatePicker::classname(), [
-        'options' => ['placeholder' => 'Enter start date', 'dateFormat' => 'd M Y'],        
+        'options' => ['placeholder' => 'Enter start date', 'dateFormat' => 'd M Y'],
     ]);
     ?>
 
     <?=
     $form->field($model, 'end_date')->widget(yii\jui\DatePicker::classname(), [
-        'options' => ['placeholder' => 'Enter end date', 'dateFormat' => 'd M Y'],        
+        'options' => ['placeholder' => 'Enter end date', 'dateFormat' => 'd M Y'],
     ]);
     ?>
+
+    <?= $form->field($model, 'documents_required')->checkboxList($documents); ?>
 
         <?= $form->field($model, 'is_published')->checkbox() ?>
 
