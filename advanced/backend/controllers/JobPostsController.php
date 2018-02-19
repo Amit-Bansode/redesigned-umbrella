@@ -137,7 +137,7 @@ class JobPostsController extends Controller {
         
         $model->documents_required = array_keys($arrMixDocumentsRequired);
         $arrminJobGoverning = $this->getJobGoverning();
-//        $model->job_governing_id = array_keys( $arrminJobGoverning );
+
         $arrMixDocuments = $this->getDocuments();
 
         return $this->render('update', [
