@@ -36,6 +36,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'unique_job_number',
             'job_title',
             'job_description:ntext',
+            [ 'label' => $model->getAttributeLabel('job_governing_id'), 'value' => backend\models\JobGoverning::findOne($model->job_governing_id)->governing_name],
             'qualification',
             'apply_url:url',
             [ 'label' => $model->getAttributeLabel('start_date'), 'value' => Yii::$app->common->convertDateFormat($model->start_date, 'd M Y')],

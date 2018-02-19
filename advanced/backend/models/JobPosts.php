@@ -12,6 +12,7 @@ use Yii;
  * @property string $unique_job_number
  * @property string $job_title
  * @property string $job_description
+ * @property int $job_governing_id
  * @property string $qualification
  * @property string $apply_url
  * @property string $start_date
@@ -41,8 +42,8 @@ class JobPosts extends \yii\db\ActiveRecord {
      */
     public function rules() {
         return [
-            [['job_type_id', 'job_title', 'job_description', 'apply_url', 'start_date', 'end_date'], 'required'],
-            [['job_type_id', 'is_published', 'is_deleted', 'updated_by', 'created_by'], 'integer'],
+            [['job_type_id', 'job_title', 'job_description', 'job_governing_id','apply_url', 'start_date', 'end_date'], 'required'],
+            [['job_type_id', 'job_governing_id', 'is_published', 'is_deleted', 'updated_by', 'created_by'], 'integer'],
             [['job_description'], 'string'],
             [['start_date', 'end_date', 'updated_on', 'created_on', 'documents_required'], 'safe'],
             [['unique_job_number'], 'string', 'max' => 50],
@@ -72,7 +73,8 @@ class JobPosts extends \yii\db\ActiveRecord {
             'updated_on' => Yii::t('app', 'Updated On'),
             'created_by' => Yii::t('app', 'Created By'),
             'created_on' => Yii::t('app', 'Created On'),
-            'documents_required' => Yii::t( 'app', 'Required Documents' )
+            'documents_required' => Yii::t( 'app', 'Required Documents' ),
+            'job_governing_id' => Yii::t('app', 'Job Governing')
         ];
     }
 
@@ -88,6 +90,10 @@ class JobPosts extends \yii\db\ActiveRecord {
      */
     public function getJobType() {
         return $this->hasOne(JobTypes::className(), ['id' => 'job_type_id']);
+    }
+    
+    public function getJobGoverning() {
+        return $this->hasOne(JobGoverning::className(), ['id' => 'job_governing_id']);
     }
 
     public function beforeSave($insert) {

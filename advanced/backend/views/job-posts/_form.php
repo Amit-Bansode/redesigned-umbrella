@@ -22,9 +22,10 @@ use dosamigos\ckeditor\CKEditor;
     <?=
     $form->field($model, 'job_description')->widget(CKEditor::className(), [
         'options' => ['rows' => 6],
-        
     ])
     ?>
+
+    <?= $form->field($model, 'job_governing_id')->radioList($job_governing); ?>
 
     <?= $form->field($model, 'qualification')->textInput(['maxlength' => true]) ?>
 
@@ -44,12 +45,12 @@ use dosamigos\ckeditor\CKEditor;
 
     <?= $form->field($model, 'documents_required')->checkboxList($documents); ?>
 
-        <?= $form->field($model, 'is_published')->checkbox() ?>
+    <?= $form->field($model, 'is_published')->checkbox() ?>
 
     <div class="form-group">
-    <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
     </div>
 
-<?php ActiveForm::end(); ?>
+    <?php ActiveForm::end(); ?>
 
 </div>

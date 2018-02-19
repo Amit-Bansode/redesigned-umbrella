@@ -88,9 +88,12 @@ class JobPostsController extends Controller {
             }
         }
 
+        $arrMixJobGoverning = $this->getJobGoverning();
+        
         return $this->render('create', [
                     'model' => $model,
-                    'documents' => $arrMixDocuments
+                    'documents' => $arrMixDocuments,
+                    'job_governing' => $arrMixJobGoverning
         ]);
     }
 
@@ -133,13 +136,14 @@ class JobPostsController extends Controller {
         }
         
         $model->documents_required = array_keys($arrMixDocumentsRequired);
-
+        $arrminJobGoverning = $this->getJobGoverning();
+//        $model->job_governing_id = array_keys( $arrminJobGoverning );
         $arrMixDocuments = $this->getDocuments();
 
         return $this->render('update', [
                     'model' => $model,
                     'documents' => $arrMixDocuments,
-//                    'documents_required' => $arrMixDocumentsRequired
+                    'job_governing' => $arrminJobGoverning
         ]);
     }
 
@@ -180,6 +184,17 @@ class JobPostsController extends Controller {
         }
 
         return $arrMixDocuments;
+    }
+    
+    private function getJobGoverning() {
+        $arrmixJobGoverning = [];
+        $arrObjJobGoverning = \backend\models\JobGoverning::findAll(['is_published' => 1]);
+        
+        foreach ( $arrObjJobGoverning AS $objJobGoverning ) {
+            $arrmixJobGoverning[$objJobGoverning->id] = $objJobGoverning->governing_name;
+        }
+        
+        return $arrmixJobGoverning;
     }
 
 }
