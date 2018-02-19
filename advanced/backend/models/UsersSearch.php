@@ -1,11 +1,11 @@
 <?php
 
-namespace app\models;
+namespace backend\models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Users;
+use backend\models\Users;
 
 /**
  * UsersSearch represents the model behind the search form of `app\models\Users`.
@@ -18,7 +18,7 @@ class UsersSearch extends Users
     public function rules()
     {
         return [
-            [['id', 'user_type', 'is_published', 'updated_by', 'created_by'], 'integer'],
+            [['id', 'user_type', 'is_published', 'is_deleted', 'updated_by', 'created_by'], 'integer'],
             [['username', 'email_address', 'password', 'password_hash', 'last_login_date', 'updated_on', 'created_on'], 'safe'],
         ];
     }
@@ -56,13 +56,15 @@ class UsersSearch extends Users
             // $query->where('0=1');
             return $dataProvider;
         }
-
+        $this->user_type = 2;
+        $this->is_deleted = FALSE;
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
             'user_type' => $this->user_type,
             'last_login_date' => $this->last_login_date,
             'is_published' => $this->is_published,
+            'is_deleted' => $this->is_deleted,
             'updated_by' => $this->updated_by,
             'updated_on' => $this->updated_on,
             'created_by' => $this->created_by,

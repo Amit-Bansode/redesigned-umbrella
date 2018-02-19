@@ -73,6 +73,9 @@ class SiteController extends Controller {
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            $objUser = \backend\models\Users::findOne( ['id' => Yii::$app->user->id] );
+            $objUser->last_login_date = date( 'Y-m-d H:i:s' );
+            $objUser->save();
             return $this->goBack();
         } else {
             return $this->render('login', [

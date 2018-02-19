@@ -37,9 +37,15 @@ use yii\helpers\Url;
                         ],
                         [
                             'label' => 'Job Posts',
-                            'icon' => 'fa fa-users',
+                            'icon' => 'fa fa-book',
                             'url' => ['/job-posts'],
                             'active' => $this->context->route == 'job-posts/index',
+                        ],
+                        [
+                            'label' => 'Admin Users',
+                            'icon' => 'fa fa-users',
+                            'url' => ['/users'],
+                            'active' => $this->context->route == 'users/index',
                         ],
                     /* [
                       'label' => 'Master',
