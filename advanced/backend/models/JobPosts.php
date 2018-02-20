@@ -42,7 +42,7 @@ class JobPosts extends \yii\db\ActiveRecord {
      */
     public function rules() {
         return [
-            [['job_type_id', 'job_title', 'job_description', 'job_governing_id','apply_url', 'start_date', 'end_date'], 'required'],
+            [['job_type_id', 'job_title', 'job_description', 'job_governing_id','apply_url', 'documents_required', 'start_date', 'end_date'], 'required'],
             [['job_type_id', 'job_governing_id', 'is_published', 'is_deleted', 'updated_by', 'created_by'], 'integer'],
             [['job_description'], 'string'],
             [['start_date', 'end_date', 'updated_on', 'created_on', 'documents_required'], 'safe'],
