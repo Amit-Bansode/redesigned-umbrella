@@ -1,5 +1,4 @@
 <?php
-
 /* @var $this \yii\web\View */
 /* @var $content string */
 
@@ -8,45 +7,45 @@ use yii\helpers\Html;
 use backend\assets\AdminLteAsset;
 
 //AppAsset::register($this);
-$asset      = AdminLteAsset::register($this);
-$baseUrl    = $asset->baseUrl;
-
+$asset = AdminLteAsset::register($this);
+$baseUrl = $asset->baseUrl;
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
-<head>
-    <meta charset="<?= Yii::$app->charset ?>">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <?= Html::csrfMetaTags() ?>
-    <title><?= Html::encode($this->title) ?></title>
-    <?php $this->head() ?>
-</head>
-<body class="hold-transition skin-blue sidebar-mini">
-<?php $this->beginBody() ?>
+    <head>
+        <meta charset="<?= Yii::$app->charset ?>">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <?= Html::csrfMetaTags() ?>
+        <title><?= Html::encode($this->title) ?></title>
+        <?php $this->head() ?>
+    </head>
 
-<div class="wrapper">
-    <?php
-     echo $this->render('header.php', ['baserUrl' => $baseUrl, 'title'=>Yii::$app->name]) ;
-     if( !Yii::$app->user->isGuest ) {
-         echo $this->render('leftside.php', ['baserUrl' => $baseUrl]);
-     }
-     
-     echo $this->render('content.php', ['content' => $content]);
-     echo $this->render('footer.php', ['baserUrl' => $baseUrl]);
-     //echo $this->render('rightside.php', ['baserUrl' => $baseUrl]);
-     ?>
-</div>
+    <body class="hold-transition skin-blue sidebar-mini">
+        <?php $this->beginBody() ?>
 
-<!--footer class="footer">
-    <div class="container">
-        <p class="pull-left">&copy; My Company <?//= date('Y') ?></p>
+        <div class="wrapper">
+            <?php
+            echo $this->render('header.php', ['baserUrl' => $baseUrl, 'title' => Yii::$app->name]);
+            if (!Yii::$app->user->isGuest) {
+                echo $this->render('leftside.php', ['baserUrl' => $baseUrl]);
+            }
 
-        <p class="pull-right"><?//= Yii::powered() ?></p>
-    </div>
-</footer-->
+            echo $this->render('content.php', ['content' => $content]);
+            echo $this->render('footer.php', ['baserUrl' => $baseUrl]);
+//echo $this->render('rightside.php', ['baserUrl' => $baseUrl]);
+            ?>
+        </div>
 
-<?php $this->endBody() ?>
-</body>
+        <!--footer class="footer">
+            <div class="container">
+                <p class="pull-left">&copy; My Company <?//= date('Y') ?></p>
+        
+                <p class="pull-right"><?//= Yii::powered() ?></p>
+            </div>
+        </footer-->
+
+        <?php $this->endBody() ?>
+    </body>
 </html>
 <?php $this->endPage() ?>

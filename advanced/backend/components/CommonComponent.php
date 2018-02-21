@@ -38,5 +38,9 @@ class CommonComponent extends Component {
         return date( $strDateFormat, strtotime( $strDate ) );
         
     }
+    
+    public function convertBooleanValue( $boolValue ) {
+        return ( true == $boolValue ) ? 'True' : 'False';
+    }
 
 }

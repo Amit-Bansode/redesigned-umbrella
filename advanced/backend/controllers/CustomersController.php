@@ -3,21 +3,22 @@
 namespace backend\controllers;
 
 use Yii;
-use backend\models\Documents;
-use backend\models\DocumentsSearch;
+use backend\models\Customers;
+use backend\models\CustomersSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * DocumentsController implements the CRUD actions for Documents model.
+ * CustomersController implements the CRUD actions for Customers model.
  */
-class DocumentsController extends Controller {
-
+class CustomersController extends Controller
+{
     /**
      * @inheritdoc
      */
-    public function behaviors() {
+    public function behaviors()
+    {
         return [
             'verbs' => [
                 'class' => VerbFilter::className(),
@@ -29,56 +30,60 @@ class DocumentsController extends Controller {
     }
 
     /**
-     * Lists all Documents models.
+     * Lists all Customers models.
      * @return mixed
      */
-    public function actionIndex() {
-        $searchModel = new DocumentsSearch();
+    public function actionIndex()
+    {
+        $searchModel = new CustomersSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-                    'searchModel' => $searchModel,
-                    'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
     /**
-     * Displays a single Documents model.
+     * Displays a single Customers model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id) {
+    public function actionView($id)
+    {
         return $this->render('view', [
-                    'model' => $this->findModel($id),
+            'model' => $this->findModel($id),
         ]);
     }
 
     /**
-     * Creates a new Documents model.
+     * Creates a new Customers model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate() {
-        $model = new Documents();
+    public function actionCreate()
+    {
+        $model = new Customers();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('create', [
-                    'model' => $model,
+            'model' => $model,
         ]);
     }
 
     /**
-     * Updates an existing Documents model.
+     * Updates an existing Customers model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id) {
+    public function actionUpdate($id)
+    {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -86,46 +91,37 @@ class DocumentsController extends Controller {
         }
 
         return $this->render('update', [
-                    'model' => $model,
+            'model' => $model,
         ]);
     }
 
     /**
-     * Deletes an existing Documents model.
+     * Deletes an existing Customers model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id) {
-        
-        $arrobjDocumentsRequired = \backend\models\DocumentsRequired::findAll(['document_id' => $id]);
-        $model = $this->findModel($id);
+    public function actionDelete($id)
+    {
+        $this->findModel($id)->delete();
 
-        if( 0 < count( $arrobjDocumentsRequired ) ) {            
-            Yii::$app->session->setFlash('error', "Unable to delete the document, document is used.");
-            return $this->redirect(['index']);
-            
-        }
-        
-        $model->delete();
-        
         return $this->redirect(['index']);
     }
 
     /**
-     * Finds the Documents model based on its primary key value.
+     * Finds the Customers model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Documents the loaded model
+     * @return Customers the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id) {
-        if (($model = Documents::findOne($id)) !== null) {
+    protected function findModel($id)
+    {
+        if (($model = Customers::findOne($id)) !== null) {
             return $model;
         }
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
-
 }

@@ -2,9 +2,29 @@
 
 use yii\widgets\Breadcrumbs;
 use yii\widgets\AlertLte;
+
+$strStyle = '';
+
+if( Yii::$app->user->isGuest ) {
+    $strStyle = 'style="margin-left: 0px !important;"';
+}
+
 ?>
 <!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper">
+<div class="content-wrapper" <?= $strStyle ?>>
+    <?php if (Yii::$app->session->hasFlash('success')): ?>
+        <div class="alert alert-success alert-dismissable" style="text-align: center;">
+            <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+            <?= Yii::$app->session->getFlash('success') ?>
+        </div>
+    <?php endif; ?>
+
+    <?php if (Yii::$app->session->hasFlash('error')): ?>
+        <div class="alert alert-danger alert-dismissable" style="text-align: center;">
+            <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+            <?= Yii::$app->session->getFlash('error') ?>
+        </div>
+    <?php endif; ?>
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <?php if (isset($this->blocks['content-header'])) { ?>
@@ -33,6 +53,6 @@ use yii\widgets\AlertLte;
 
     <!-- Main content -->
     <section class="content">
-<?= $content ?>
+        <?= $content ?>
     </section><!-- /.content -->
 </div><!-- /.content-wrapper -->

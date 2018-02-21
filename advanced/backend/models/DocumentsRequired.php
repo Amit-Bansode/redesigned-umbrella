@@ -60,7 +60,7 @@ class DocumentsRequired extends \yii\db\ActiveRecord {
         return $this->hasOne(Documents::className(), ['id' => 'document_id']);
     }
 
-    public function getDocumentsByJobPostIds($intJobPostId) {
+    public static function getDocumentsByJobPostIds($intJobPostId) {
 
         $rows = (new \yii\db\Query())
                 ->select(['documents.id', 'document_name'])

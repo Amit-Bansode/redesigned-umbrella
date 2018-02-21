@@ -3,8 +3,9 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\DocumentsSearch */
+/* @var $searchModel backend\models\DocumentsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = Yii::t('app', 'Documents');
@@ -14,28 +15,34 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php Pjax::begin(); ?>
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php // echo $this->render('_search', ['model' => $searchModel]);  ?>
 
     <p>
         <?= Html::a(Yii::t('app', 'Create Documents'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?= GridView::widget([
+    <?=
+    GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
+            //'id',
             'document_name',
-            'is_published',
-            'modified_by',
-            'modified_on',
+            [
+                'label' => 'Is Published',
+                'format' => 'raw',
+                'value' => function($data) {
+                    return Yii::$app->common->convertBooleanValue($data->is_published);
+                }
+            ],
+//            'updated_by',
+//            'updated_on',
             //'created_by',
             //'created_on',
-
             ['class' => 'yii\grid\ActionColumn'],
         ],
-    ]); ?>
+    ]);
+    ?>
     <?php Pjax::end(); ?>
 </div>

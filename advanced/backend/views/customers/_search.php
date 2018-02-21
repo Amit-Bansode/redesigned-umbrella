@@ -4,11 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model backend\models\DocumentsSearch */
+/* @var $model backend\models\CustomersSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="documents-search">
+<div class="customers-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
@@ -20,15 +20,23 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'id') ?>
 
-    <?= $form->field($model, 'document_name') ?>
+    <?= $form->field($model, 'username') ?>
 
-    <?= $form->field($model, 'is_published') ?>
+    <?= $form->field($model, 'first_name') ?>
 
-    <?= $form->field($model, 'updated_by') ?>
+    <?= $form->field($model, 'last_name') ?>
 
-    <?= $form->field($model, 'updated_on') ?>
+    <?= $form->field($model, 'email_address') ?>
 
-    <?php // echo $form->field($model, 'created_by') ?>
+    <?php // echo $form->field($model, 'primary_contact_number') ?>
+
+    <?php // echo $form->field($model, 'password') ?>
+
+    <?php // echo $form->field($model, 'is_published') ?>
+
+    <?php // echo $form->field($model, 'is_deleted') ?>
+
+    <?php // echo $form->field($model, 'updated_on') ?>
 
     <?php // echo $form->field($model, 'created_on') ?>
 

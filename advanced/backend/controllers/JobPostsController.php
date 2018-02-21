@@ -156,6 +156,7 @@ class JobPostsController extends Controller {
      */
     public function actionDelete($id) {
         $model = $this->findModel($id);
+        $model->documents_required = 1;
         $model->is_deleted = TRUE;
         $model->save();
         return $this->redirect(['index']);

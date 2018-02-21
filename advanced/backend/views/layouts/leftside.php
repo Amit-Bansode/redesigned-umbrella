@@ -9,7 +9,7 @@ use yii\helpers\Url;
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
         <!-- Sidebar user panel -->
-        <div class="user-panel">
+        <!--<div class="user-panel">
             <div class="pull-left image">
                 <?= Html::img('@web/img/user2-160x160.jpg', ['class' => 'img-circle', 'alt' => 'User Image']) ?>
             </div>
@@ -21,7 +21,7 @@ use yii\helpers\Url;
                     ?></p>
 
             </div>
-        </div>
+        </div>-->
         <!-- search form -->
 
         <!-- /.search form -->
@@ -40,6 +40,12 @@ use yii\helpers\Url;
                             'icon' => 'fa fa-book',
                             'url' => ['/job-posts'],
                             'active' => $this->context->route == 'job-posts/index',
+                        ],
+                        [
+                            'label' => 'Documents',
+                            'icon' => 'fa fa-book',
+                            'url' => ['/documents'],
+                            'active' => $this->context->route == 'documents/index',
                         ],
                         [
                             'label' => 'Admin Users',

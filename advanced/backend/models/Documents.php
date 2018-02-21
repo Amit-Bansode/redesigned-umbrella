@@ -10,30 +10,30 @@ use Yii;
  * @property int $id
  * @property string $document_name
  * @property int $is_published
- * @property int $modified_by
- * @property string $modified_on
+ * @property int $updated_by
+ * @property string $updated_on
  * @property int $created_by
  * @property string $created_on
+ *
+ * @property DocumentsRequired[] $documentsRequireds
  */
-class Documents extends \yii\db\ActiveRecord
-{
+class Documents extends \yii\db\ActiveRecord {
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'documents';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
-            [['document_name', 'modified_by', 'modified_on', 'created_by'], 'required'],
-            [['is_published', 'modified_by', 'created_by'], 'integer'],
-            [['modified_on', 'created_on'], 'safe'],
+            [['document_name'], 'required'],
+            [['is_published', 'updated_by', 'created_by'], 'integer'],
+            [['updated_on', 'created_on'], 'safe'],
             [['document_name'], 'string', 'max' => 100],
         ];
     }
@@ -41,16 +41,37 @@ class Documents extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => Yii::t('app', 'ID'),
             'document_name' => Yii::t('app', 'Document Name'),
             'is_published' => Yii::t('app', 'Is Published'),
-            'modified_by' => Yii::t('app', 'Modified By'),
-            'modified_on' => Yii::t('app', 'Modified On'),
+            'updated_by' => Yii::t('app', 'Updated By'),
+            'updated_on' => Yii::t('app', 'Updated On'),
             'created_by' => Yii::t('app', 'Created By'),
             'created_on' => Yii::t('app', 'Created On'),
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDocumentsRequireds() {
+        return $this->hasMany(DocumentsRequired::className(), ['document_id' => 'id']);
+    }
+
+    public function beforeSave($insert) {
+        parent::beforeSave($insert);
+        
+        if( TRUE == $insert ) {
+            $this->created_by = Yii::$app->user->id;
+            $this->created_on = date( 'Y-m-d H:i:s' );
+        }
+     
+        $this->updated_by = Yii::$app->user->id;
+        $this->updated_on = date( 'Y-m-d H:i:s' );
+        
+        return TRUE;
+        
     }
 }
