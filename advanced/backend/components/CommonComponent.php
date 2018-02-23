@@ -42,5 +42,16 @@ class CommonComponent extends Component {
     public function convertBooleanValue( $boolValue ) {
         return ( true == $boolValue ) ? 'True' : 'False';
     }
+    
+    public function createdLog( $strTableName, $arrStrAttributes = [], $intUserId ) {
+        $objChangeLogModel = new \backend\models\ChangeLog();
+        $objChangeLogModel->created_on = date('Y-m-d H:i:s');
+        $objChangeLogModel->created_by = $intUserId;
+        $objChangeLogModel->table_name = $strTableName;
+        $objChangeLogModel->data = serialize($arrStrAttributes);
+        
+        $objChangeLogModel->save();
+
+    }
 
 }

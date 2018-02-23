@@ -12,13 +12,12 @@ use yii\filters\VerbFilter;
 /**
  * CustomersController implements the CRUD actions for Customers model.
  */
-class CustomersController extends Controller
-{
+class CustomersController extends Controller {
+
     /**
      * @inheritdoc
      */
-    public function behaviors()
-    {
+    public function behaviors() {
         return [
             'verbs' => [
                 'class' => VerbFilter::className(),
@@ -45,14 +44,13 @@ class CustomersController extends Controller
      * Lists all Customers models.
      * @return mixed
      */
-    public function actionIndex()
-    {
+    public function actionIndex() {
         $searchModel = new CustomersSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -62,10 +60,9 @@ class CustomersController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id)
-    {
+    public function actionView($id) {
         return $this->render('view', [
-            'model' => $this->findModel($id),
+                    'model' => $this->findModel($id),
         ]);
     }
 
@@ -74,8 +71,7 @@ class CustomersController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
-    {
+    public function actionCreate() {
         $model = new Customers();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -83,7 +79,7 @@ class CustomersController extends Controller
         }
 
         return $this->render('create', [
-            'model' => $model,
+                    'model' => $model,
         ]);
     }
 
@@ -94,22 +90,22 @@ class CustomersController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
-    {
+    public function actionUpdate($id) {
         $model = $this->findModel($id);
         $strOldPassword = $model->password;
         $boolIsValid = $model->load(Yii::$app->request->post());
-        
-        if( $model->password == '' ) {
+
+        if ($model->password == '') {
             $model->password = $strOldPassword;
         }
-        
+        $arrstrDirtAttributes = $model->getDirtyAttributes();
         if ($boolIsValid && $model->save()) {
+            Yii::$app->common->createdLog( $model->tableName(), $arrstrDirtAttributes, Yii::$app->user->id );
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
-            'model' => $model,
+                    'model' => $model,
         ]);
     }
 
@@ -120,8 +116,7 @@ class CustomersController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
-    {
+    public function actionDelete($id) {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
@@ -134,12 +129,12 @@ class CustomersController extends Controller
      * @return Customers the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id)
-    {
+    protected function findModel($id) {
         if (($model = Customers::findOne($id)) !== null) {
             return $model;
         }
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
+
 }

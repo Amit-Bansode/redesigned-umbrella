@@ -93,7 +93,10 @@ class DocumentsController extends Controller {
     public function actionUpdate($id) {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $boolIsValid = $model->load(Yii::$app->request->post());
+        $arrstrDirtAttributes = $model->getDirtyAttributes();
+        if ($boolIsValid && $model->save()) {
+            Yii::$app->common->createdLog($model->tableName(), $arrstrDirtAttributes, Yii::$app->user->id);
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -110,18 +113,17 @@ class DocumentsController extends Controller {
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id) {
-        
+
         $arrobjDocumentsRequired = \backend\models\DocumentsRequired::findAll(['document_id' => $id]);
         $model = $this->findModel($id);
 
-        if( 0 < count( $arrobjDocumentsRequired ) ) {            
+        if (0 < count($arrobjDocumentsRequired)) {
             Yii::$app->session->setFlash('error', "Unable to delete the document, document is used.");
             return $this->redirect(['index']);
-            
         }
-        
+
         $model->delete();
-        
+
         return $this->redirect(['index']);
     }
 

@@ -121,9 +121,11 @@ class JobPostsController extends Controller {
         $model = $this->findModel($id);
         $arrMixDocumentsRequired = \backend\models\DocumentsRequired::getDocumentsByJobPostIds($model->id);
         $boolsIsView = TRUE;
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $boolIsValid = $model->load(Yii::$app->request->post());
+        $arrstrDirtAttributes = $model->getDirtyAttributes();
+        if ( $boolIsValid && $model->save()) {
             $arrIntPreviousValues = array_keys($arrMixDocumentsRequired);
-
+            Yii::$app->common->createdLog( $model->tableName(), $arrstrDirtAttributes, Yii::$app->user->id );    
             if (0 < count($arrIntPreviousValues) && FALSE == \backend\models\DocumentsRequired::deleteAll(['job_post_id' => $model->id])) {
                 $boolsIsView = FALSE;
                 $model->addError('documents_required', 'Failed to update documents.');
