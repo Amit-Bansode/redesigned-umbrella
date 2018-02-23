@@ -26,6 +26,18 @@ class CustomersController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
+            'access' => [
+                'class' => \yii\filters\AccessControl::className(),
+                'only' => [],
+                'rules' => [
+                    // allow authenticated users
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                // everything else is denied
+                ],
+            ],
         ];
     }
 
@@ -85,8 +97,14 @@ class CustomersController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $strOldPassword = $model->password;
+        $boolIsValid = $model->load(Yii::$app->request->post());
+        
+        if( $model->password == '' ) {
+            $model->password = $strOldPassword;
+        }
+        
+        if ($boolIsValid && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

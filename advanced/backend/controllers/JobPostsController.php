@@ -25,6 +25,18 @@ class JobPostsController extends Controller {
                     'delete' => ['POST'],
                 ],
             ],
+            'access' => [
+                'class' => \yii\filters\AccessControl::className(),
+                'only' => [],
+                'rules' => [
+                    // allow authenticated users
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                // everything else is denied
+                ],
+            ],
         ];
     }
 
@@ -34,6 +46,7 @@ class JobPostsController extends Controller {
      */
     public function actionIndex() {
         $searchModel = new JobPostsSearch();
+
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -89,7 +102,7 @@ class JobPostsController extends Controller {
         }
 
         $arrMixJobGoverning = $this->getJobGoverning();
-        
+
         return $this->render('create', [
                     'model' => $model,
                     'documents' => $arrMixDocuments,
@@ -111,7 +124,7 @@ class JobPostsController extends Controller {
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $arrIntPreviousValues = array_keys($arrMixDocumentsRequired);
 
-            if ( 0 < count($arrIntPreviousValues) && FALSE == \backend\models\DocumentsRequired::deleteAll(['job_post_id' => $model->id])) {
+            if (0 < count($arrIntPreviousValues) && FALSE == \backend\models\DocumentsRequired::deleteAll(['job_post_id' => $model->id])) {
                 $boolsIsView = FALSE;
                 $model->addError('documents_required', 'Failed to update documents.');
             }
@@ -134,7 +147,7 @@ class JobPostsController extends Controller {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
         }
-        
+
         $model->documents_required = array_keys($arrMixDocumentsRequired);
         $arrminJobGoverning = $this->getJobGoverning();
 
@@ -186,15 +199,15 @@ class JobPostsController extends Controller {
 
         return $arrMixDocuments;
     }
-    
+
     private function getJobGoverning() {
         $arrmixJobGoverning = [];
         $arrObjJobGoverning = \backend\models\JobGoverning::findAll(['is_published' => 1]);
-        
-        foreach ( $arrObjJobGoverning AS $objJobGoverning ) {
+
+        foreach ($arrObjJobGoverning AS $objJobGoverning) {
             $arrmixJobGoverning[$objJobGoverning->id] = $objJobGoverning->governing_name;
         }
-        
+
         return $arrmixJobGoverning;
     }
 

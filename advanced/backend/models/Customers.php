@@ -19,23 +19,21 @@ use Yii;
  * @property string $updated_on
  * @property string $created_on
  */
-class Customers extends \yii\db\ActiveRecord
-{
+class Customers extends \yii\db\ActiveRecord {
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'customers';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
-            [['username', 'first_name', 'last_name', 'email_address', 'primary_contact_number', 'password', 'updated_on'], 'required'],
+            [['username', 'first_name', 'last_name', 'email_address', 'primary_contact_number'], 'required'],
             [['is_published', 'is_deleted'], 'integer'],
             [['updated_on', 'created_on'], 'safe'],
             [['username', 'first_name', 'last_name'], 'string', 'max' => 100],
@@ -48,8 +46,7 @@ class Customers extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => Yii::t('app', 'ID'),
             'username' => Yii::t('app', 'Username'),
@@ -64,4 +61,17 @@ class Customers extends \yii\db\ActiveRecord
             'created_on' => Yii::t('app', 'Created On'),
         ];
     }
+    
+    public function beforeSave($insert) {
+        parent::beforeSave($insert);
+        
+        if( TRUE == $insert ) {
+            $this->created_on = date('Y-m-d H:i:s');
+        }
+        
+        $this->updated_on = date('Y-m-d H:i:s');
+        
+        return TRUE;
+    }
+
 }

@@ -10,7 +10,7 @@ use yii\widgets\ActiveForm;
 
 <div class="customers-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(); $model->password = ''; ?>
 
     <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
 
@@ -23,14 +23,8 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'primary_contact_number')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'is_published')->textInput() ?>
-
-    <?= $form->field($model, 'is_deleted')->textInput() ?>
-
-    <?= $form->field($model, 'updated_on')->textInput() ?>
-
-    <?= $form->field($model, 'created_on')->textInput() ?>
+    <label class="text-red">Please enter password if you want to change it.</label>
+    <?= $form->field($model, 'is_published')->checkbox() ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>

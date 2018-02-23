@@ -53,6 +53,12 @@ use yii\helpers\Url;
                             'url' => ['/users'],
                             'active' => $this->context->route == 'users/index',
                         ],
+                        [
+                            'label' => 'Customers',
+                            'icon' => 'fa fa-users',
+                            'url' => ['/customers'],
+                            'active' => $this->context->route == 'customers/index',
+                        ],
                     /* [
                       'label' => 'Master',
                       'icon' => 'fa fa-database',
