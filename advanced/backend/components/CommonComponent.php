@@ -29,29 +29,36 @@ class CommonComponent extends Component {
 
         return 'GOVT' . str_pad($intId, 5, 0, STR_PAD_LEFT);
     }
-    
-    public function convertDateFormat( $strDate, $strDateFormat = 'Y-m-d H:i:s' ) {
-        
-        if( FALSE == strlen($strDate) ) {
+
+    public function convertDateFormat($strDate, $strDateFormat = 'Y-m-d H:i:s') {
+
+        if (FALSE == strlen($strDate)) {
             return NULL;
         }
-        return date( $strDateFormat, strtotime( $strDate ) );
-        
+        return date($strDateFormat, strtotime($strDate));
     }
-    
-    public function convertBooleanValue( $boolValue ) {
+
+    public function convertBooleanValue($boolValue) {
         return ( true == $boolValue ) ? 'True' : 'False';
     }
-    
-    public function createdLog( $strTableName, $arrStrAttributes = [], $intUserId ) {
+
+    public function createdLog($strTableName, $arrStrAttributes = [], $intUserId) {
         $objChangeLogModel = new \backend\models\ChangeLog();
         $objChangeLogModel->created_on = date('Y-m-d H:i:s');
         $objChangeLogModel->created_by = $intUserId;
         $objChangeLogModel->table_name = $strTableName;
         $objChangeLogModel->data = serialize($arrStrAttributes);
-        
-        $objChangeLogModel->save();
 
+        $objChangeLogModel->save();
     }
 
+    public function getJobApplicationStatus( $intJobApplicationStatusId = NULL, $boolIsGetAll = FALSE ) {
+        
+        $arrMixJobApplicationStatus = [
+            1 => 'Applied',
+            2 => 'In Progress',
+            
+        ];
+        
+    }
 }

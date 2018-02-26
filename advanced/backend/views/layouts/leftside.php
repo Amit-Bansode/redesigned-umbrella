@@ -11,14 +11,14 @@ use yii\helpers\Url;
         <!-- Sidebar user panel -->
         <!--<div class="user-panel">
             <div class="pull-left image">
-                <?= Html::img('@web/img/user2-160x160.jpg', ['class' => 'img-circle', 'alt' => 'User Image']) ?>
+        <?= Html::img('@web/img/user2-160x160.jpg', ['class' => 'img-circle', 'alt' => 'User Image']) ?>
             </div>
             <div class="pull-left info">
                 <p><?php
-                    if (FALSE == yii::$app->user->isGuest) {
-                        echo yii::$app->user->identity->username;
-                    }
-                    ?></p>
+        if (FALSE == yii::$app->user->isGuest) {
+            echo yii::$app->user->identity->username;
+        }
+        ?></p>
 
             </div>
         </div>-->
@@ -58,6 +58,12 @@ use yii\helpers\Url;
                             'icon' => 'fa fa-users',
                             'url' => ['/customers'],
                             'active' => $this->context->route == 'customers/index',
+                        ],
+                        [
+                            'label' => 'Applied Jobs',
+                            'icon' => 'fa fa-users',
+                            'url' => ['/applied-jobs'],
+                            'active' => $this->context->route == 'applied-jobs/index',
                         ],
                     /* [
                       'label' => 'Master',
