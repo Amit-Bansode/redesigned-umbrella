@@ -31,9 +31,9 @@ $this->params['breadcrumbs'][] = $this->title;
     DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
+//            'id',
             'document_name',
-            'is_published',
+            [ 'label' => $model->getAttributeLabel('is_published'), 'value' => Yii::$app->common->convertBooleanValue($model->is_published)],
             [ 'label' => $model->getAttributeLabel('updated_by'), 'value' => backend\models\Users::findOne($model->updated_by)->username],
             'updated_on',
             [ 'label' => $model->getAttributeLabel('created_by'), 'value' => backend\models\Users::findOne($model->created_by)->username],

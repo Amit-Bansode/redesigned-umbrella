@@ -74,6 +74,7 @@ class DocumentsController extends Controller {
     public function actionCreate() {
         $model = new Documents();
 
+        $model->scenario = 'create';
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
@@ -92,7 +93,7 @@ class DocumentsController extends Controller {
      */
     public function actionUpdate($id) {
         $model = $this->findModel($id);
-
+        $model->scenario = 'update';
         $boolIsValid = $model->load(Yii::$app->request->post());
         $arrstrDirtAttributes = $model->getDirtyAttributes();
         if ($boolIsValid && $model->save()) {

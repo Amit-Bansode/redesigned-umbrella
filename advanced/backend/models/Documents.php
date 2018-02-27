@@ -35,6 +35,8 @@ class Documents extends \yii\db\ActiveRecord {
             [['is_published', 'updated_by', 'created_by'], 'integer'],
             [['updated_on', 'created_on'], 'safe'],
             [['document_name'], 'string', 'max' => 100],
+            ['document_name', 'validateName', 'on' => 'create'],
+            ['document_name', 'validateName', 'on' => 'update']
         ];
     }
 
@@ -62,16 +64,44 @@ class Documents extends \yii\db\ActiveRecord {
 
     public function beforeSave($insert) {
         parent::beforeSave($insert);
-        
-        if( TRUE == $insert ) {
+
+        if (TRUE == $insert) {
             $this->created_by = Yii::$app->user->id;
-            $this->created_on = date( 'Y-m-d H:i:s' );
+            $this->created_on = date('Y-m-d H:i:s');
         }
-     
+
         $this->updated_by = Yii::$app->user->id;
-        $this->updated_on = date( 'Y-m-d H:i:s' );
-        
+        $this->updated_on = date('Y-m-d H:i:s');
+
         return TRUE;
-        
     }
+
+    public function validateName($attribute, $params, $validator) {
+
+        if ('create' == $validator->on[0]) {
+
+            $objDocuments = $this->findAll([ 'lower( ' . $attribute . ' ) ' => strtolower($this->document_name)]);
+
+            if (0 >= count($objDocuments)) {
+                return TRUE;
+            }
+
+            $this->addError($attribute, 'Document Name already exists.');
+            return FALSE;
+        } else {
+
+            $objDocuments = $this->findAll([ 'lower( ' . $attribute . ' ) ' => strtolower($this->document_name)]);
+
+            if (0 >= count($objDocuments)) {
+                return TRUE;
+            } elseif( 1 == count($objDocuments) && $objDocuments[0]->id == $this->id) {
+                return TRUE;
+            }
+
+            $this->addError($attribute, 'Document Name already exists.');
+            return FALSE;
+        }
+
+    }
+
 }
