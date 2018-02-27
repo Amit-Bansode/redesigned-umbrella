@@ -49,8 +49,15 @@ class AppliedJobsController extends Controller {
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id) {
+        
+        $model = AppliedJobs::find()
+        ->with(['customers', 'jobPost', 'applicationStatus'])
+        ->andFilterWhere( [ 'id' => $id ] )   
+        ->one();
+        
+        //echo '<pre>'; print_r($model); exit;
         return $this->render('view', [
-                    'model' => $this->findModel($id),
+                    'model' => $model,
         ]);
     }
 

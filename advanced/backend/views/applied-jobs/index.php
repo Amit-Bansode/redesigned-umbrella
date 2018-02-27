@@ -39,10 +39,12 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
             'locked_on',
             [
-                'class' => 'yii\grid\ActionColumn', 
-                'buttons' => [ 'delete' => function() {}]],
+                'class' => 'yii\grid\ActionColumn',
+                'buttons' => [ 'delete' => function() {
+                        
+                    }]],
         ],
     ]);
     ?>
-    <?php Pjax::end(); ?>
+<?php Pjax::end(); ?>
 </div>
