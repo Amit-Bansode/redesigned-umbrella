@@ -19,7 +19,7 @@ class CustomersSearch extends Customers
     {
         return [
             [['id', 'is_published', 'is_deleted'], 'integer'],
-            [['username', 'first_name', 'last_name', 'email_address', 'primary_contact_number', 'password', 'updated_on', 'created_on'], 'safe'],
+            [['unique_id', 'username', 'first_name', 'last_name', 'email_address', 'primary_contact_number', 'password', 'updated_on', 'created_on'], 'safe'],
         ];
     }
 
@@ -66,7 +66,8 @@ class CustomersSearch extends Customers
             'created_on' => $this->created_on,
         ]);
 
-        $query->andFilterWhere(['like', 'username', $this->username])
+        $query->andFilterWhere(['like', 'unique_id', $this->unique_id])
+            ->andFilterWhere(['like', 'username', $this->username])
             ->andFilterWhere(['like', 'first_name', $this->first_name])
             ->andFilterWhere(['like', 'last_name', $this->last_name])
             ->andFilterWhere(['like', 'email_address', $this->email_address])

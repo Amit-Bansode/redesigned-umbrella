@@ -61,8 +61,13 @@ class CustomersController extends Controller {
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id) {
+
+        $model = $this->findModel($id);
+
+        $model->documents_uploaded = Yii::$app->common->getuPloadedFiles($model->unique_id);
+
         return $this->render('view', [
-                    'model' => $this->findModel($id),
+                    'model' => $model,
         ]);
     }
 
@@ -100,7 +105,7 @@ class CustomersController extends Controller {
         }
         $arrstrDirtAttributes = $model->getDirtyAttributes();
         if ($boolIsValid && $model->save()) {
-            Yii::$app->common->createdLog( $model->tableName(), $arrstrDirtAttributes, Yii::$app->user->id );
+            Yii::$app->common->createdLog($model->tableName(), $arrstrDirtAttributes, Yii::$app->user->id);
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
