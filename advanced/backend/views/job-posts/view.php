@@ -35,7 +35,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //'job_type_id',
             'unique_job_number',
             'job_title',
-            'job_description:ntext',
+            'job_description:html',
             [ 'label' => $model->getAttributeLabel('job_governing_id'), 'value' => backend\models\JobGoverning::findOne($model->job_governing_id)->governing_name],
             'qualification',
             'apply_url:url',
