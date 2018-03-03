@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\DetailView;
+use branchonline\lightbox\Lightbox;
 
 /* @var $this yii\web\View */
 /* @var $model backend\models\AppliedJobs */
@@ -10,6 +11,12 @@ $this->title = $model->customers->first_name . ' ' . $model->customers->last_nam
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Applied Jobs'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<style>
+    .document-container {
+        float:left;
+    }
+</style>
+
 <div class="applied-jobs-view">
 
     <h2><?= Html::encode($this->title) ?></h2>
@@ -31,12 +38,16 @@ $this->params['breadcrumbs'][] = $this->title;
     DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'id',
+//            'id',
             [
                 'attribute' => 'customer_id',
                 'value' => function( $model ) {
                     return $model->customers->first_name . ' ' . $model->customers->last_name;
                 }
+            ],
+            [
+                'attribute' => 'unique_id',
+                'value' => $model->customers->unique_id
             ],
             [
                 'attribute' => 'job_post_id',
@@ -51,8 +62,30 @@ $this->params['breadcrumbs'][] = $this->title;
             'updated_by',
             'updated_on',
             'created_on',
+            [ 'attribute' => 'Documents',
+                'format' => 'raw',
+                'value' => ''
+            ]
         ],
     ])
     ?>
+    <?php
+    foreach ($model->documents_uploaded AS $documentsUploaded) {
+        echo '<div class="document-container">';
+        echo Lightbox::widget([
+            'files' => [
+                [
+                    'thumb' => $documentsUploaded['document_link'],
+                    'original' => $documentsUploaded['document_link'],
+                    'title' => $documentsUploaded['document_title'],
+                    'thumbOptions' => [ 'height' => 250, 'width' => 300, 'style' => 'margin-left:1%;', 'title' => $documentsUploaded['document_title']]
+                ],
+            ]
+        ]);
+        echo '<label>' . $documentsUploaded['document_title'] . '</label>';
+        echo '</div>';
+    }
+    ?>
+    <div style="clear: both;"></div>
 
 </div>

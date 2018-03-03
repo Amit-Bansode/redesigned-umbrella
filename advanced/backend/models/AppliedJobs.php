@@ -23,6 +23,7 @@ use Yii;
  */
 class AppliedJobs extends \yii\db\ActiveRecord {
 
+    public $documents_uploaded;
     /**
      * @inheritdoc
      */
@@ -82,4 +83,14 @@ class AppliedJobs extends \yii\db\ActiveRecord {
         return ( new AppliedJobs())->hasOne(JobPosts::className(), ['id' => 'job_post_id']);
     }
 
+    public function beforeSave($insert) {
+        parent::beforeSave($insert);
+        
+        if( FALSE == $insert ) {
+            $this->updated_by = \Yii::$app->user->id;
+            $this->updated_on = date('Y-m-d H:i:s');
+        }
+        
+        return TRUE;
+    }
 }

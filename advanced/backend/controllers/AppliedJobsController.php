@@ -8,6 +8,7 @@ use backend\models\AppliedJobsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 
 /**
  * AppliedJobsController implements the CRUD actions for AppliedJobs model.
@@ -35,7 +36,7 @@ class AppliedJobsController extends Controller {
     public function actionIndex() {
         $searchModel = new AppliedJobsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-//echo '<pre>';print_r($searchModel);print_r($dataProvider);exit;
+
         return $this->render('index', [
                     'searchModel' => $searchModel,
                     'dataProvider' => $dataProvider,
@@ -49,13 +50,14 @@ class AppliedJobsController extends Controller {
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id) {
-        
+
         $model = AppliedJobs::find()
-        ->with(['customers', 'jobPost', 'applicationStatus'])
-        ->andFilterWhere( [ 'id' => $id ] )   
-        ->one();
-        
-        //echo '<pre>'; print_r($model); exit;
+                ->with(['customers', 'jobPost', 'applicationStatus'])
+                ->andFilterWhere([ 'id' => $id])
+                ->one();
+
+        $model->documents_uploaded = Yii::$app->common->getuPloadedFiles($model->customers->unique_id);
+
         return $this->render('view', [
                     'model' => $model,
         ]);
@@ -86,14 +88,29 @@ class AppliedJobsController extends Controller {
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id) {
-        $model = $this->findModel($id);
+        $model = AppliedJobs::find()
+                ->with(['customers', 'jobPost', 'applicationStatus'])
+                ->andFilterWhere([ 'id' => $id])
+                ->one();
 
+        if( $model->application_status_id != '3' ) {
+            $model->is_locked = TRUE;
+            $model->locked_on = date('Y-m-d H:i:s');
+        }
+        
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
+        $arrobjApplicationStatuses = \backend\models\ApplicationStatuses::find()->all();
+
+        $arrMixAppliactionStatus = ArrayHelper::map($arrobjApplicationStatuses, 'id', 'status');
+
+        $model->documents_uploaded = Yii::$app->common->getuPloadedFiles($model->customers->unique_id);
+
         return $this->render('update', [
                     'model' => $model,
+                    'application_statues' => $arrMixAppliactionStatus
         ]);
     }
 

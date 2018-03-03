@@ -52,28 +52,20 @@ class CommonComponent extends Component {
         $objChangeLogModel->save();
     }
 
-    public function getJobApplicationStatus($intJobApplicationStatusId = NULL, $boolIsGetAll = FALSE) {
-
-        $arrMixJobApplicationStatus = [
-            1 => 'Applied',
-            2 => 'In Progress',
-        ];
-    }
-
     public function getuPloadedFiles($strCustomerUniqueId) {
         $root = (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/';
         $root .= 'redesigned-umbrella/';
-
+        
         $arrDocumentDetails = (new \yii\db\Query())
                 ->select(['*'])
                 ->from('documents_details')
                 ->where(['customer_id' => $strCustomerUniqueId])
                 ->all();
-
+        
         foreach ($arrDocumentDetails AS $intKey => $arrdocumentDetail) {
             $arrDocumentDetails[$intKey]['document_link'] = $root . $arrdocumentDetail['document_link'];
         }
-
+        
         return $arrDocumentDetails;
     }
 
