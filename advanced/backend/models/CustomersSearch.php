@@ -10,13 +10,12 @@ use backend\models\Customers;
 /**
  * CustomersSearch represents the model behind the search form of `backend\models\Customers`.
  */
-class CustomersSearch extends Customers
-{
+class CustomersSearch extends Customers {
+
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['id', 'is_published', 'is_deleted'], 'integer'],
             [['unique_id', 'username', 'first_name', 'last_name', 'email_address', 'primary_contact_number', 'password', 'updated_on', 'created_on'], 'safe'],
@@ -26,8 +25,7 @@ class CustomersSearch extends Customers
     /**
      * @inheritdoc
      */
-    public function scenarios()
-    {
+    public function scenarios() {
         // bypass scenarios() implementation in the parent class
         return Model::scenarios();
     }
@@ -39,8 +37,7 @@ class CustomersSearch extends Customers
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
-    {
+    public function search($params) {
         $query = Customers::find();
 
         // add conditions that should always apply here
@@ -67,13 +64,14 @@ class CustomersSearch extends Customers
         ]);
 
         $query->andFilterWhere(['like', 'unique_id', $this->unique_id])
-            ->andFilterWhere(['like', 'username', $this->username])
-            ->andFilterWhere(['like', 'first_name', $this->first_name])
-            ->andFilterWhere(['like', 'last_name', $this->last_name])
-            ->andFilterWhere(['like', 'email_address', $this->email_address])
-            ->andFilterWhere(['like', 'primary_contact_number', $this->primary_contact_number])
-            ->andFilterWhere(['like', 'password', $this->password]);
+                ->andFilterWhere(['like', 'username', $this->username])
+                ->andFilterWhere(['like', 'first_name', $this->first_name])
+                ->andFilterWhere(['like', 'last_name', $this->last_name])
+                ->andFilterWhere(['like', 'email_address', $this->email_address])
+                ->andFilterWhere(['like', 'primary_contact_number', $this->primary_contact_number])
+                ->andFilterWhere(['like', 'password', $this->password]);
 
         return $dataProvider;
     }
+
 }
