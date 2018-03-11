@@ -13,7 +13,16 @@ use branchonline\lightbox\Lightbox;
         float:left;
     }
 </style>
+<?php
+if ($model->application_status_id != 3 && ( $model->updated_by == NULL || ( $model->updated_by == Yii::$app->user->id ) )) {
+    ?>
+    <div class="alert alert-danger alert-dismissible">
+        This application is locked. If not processed then open in 20 minutes.
+    </div>
 
+    <?php
+}
+?>
 <div class="applied-jobs-form">
 
     <?php $form = ActiveForm::begin(); ?>
@@ -27,9 +36,9 @@ use branchonline\lightbox\Lightbox;
     <?= Html::label($model->jobPost->job_title); ?>
 
     <?= Html::label($model->getAttributeLabel('is_locked')); ?>
-    <?= Html::label( Yii::$app->common->convertBooleanValue( $model->is_locked ) ); ?>
+    <?= Html::label(Yii::$app->common->convertBooleanValue($model->is_locked)); ?>
     <div style="clear:both"></div>
-    
+
     <?= Html::label($model->getAttributeLabel('locked_on')); ?>
     <?= Html::label($model->locked_on); ?>
     <div style="clear:both"></div>
@@ -42,9 +51,9 @@ use branchonline\lightbox\Lightbox;
     <?= Html::label($model->created_on); ?>
     <div style="clear:both"></div>
 
-    <?= $form->field($model, 'application_status_id')->dropDownList( $application_statues, ['style' => 'width:200px;'] ) ?>
+    <?= $form->field($model, 'application_status_id')->dropDownList($application_statues, ['style' => 'width:200px;']) ?>
     <div style="clear:both"></div>
-        <?php
+    <?php
     foreach ($model->documents_uploaded AS $documentsUploaded) {
         echo '<div class="document-container">';
         echo Lightbox::widget([
@@ -65,10 +74,10 @@ use branchonline\lightbox\Lightbox;
 
     <div class="form-group">
         <?php
-        if( $model->application_status_id != 3 && ( $model->updated_by == NULL || ( $model->updated_by == Yii::$app->user->id ) ) ) {
+        if ($model->application_status_id != 3 && ( $model->updated_by == NULL || ( $model->updated_by == Yii::$app->user->id ) )) {
             echo Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']);
         }
-         ?>
+        ?>
     </div>
 
     <?php ActiveForm::end(); ?>

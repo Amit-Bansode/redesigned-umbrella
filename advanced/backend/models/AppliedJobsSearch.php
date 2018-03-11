@@ -46,6 +46,8 @@ class AppliedJobsSearch extends AppliedJobs {
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => ['defaultOrder' => ['id' => SORT_DESC]],
+            'pagination' => ['pageSize' => 20]
         ]);
 
         $this->load($params);
@@ -65,9 +67,9 @@ class AppliedJobsSearch extends AppliedJobs {
             'updated_on' => $this->updated_on,
             'created_on' => $this->created_on,
         ]);
-        
+
         //$query->where('OR', ['customers.first_name' => $this->customer_id, 'customers.last_name'=>$this->customer_id]);
-        
+
         $query->andFilterWhere(['OR', [ 'like', 'customers.first_name', $this->customer_id], [ 'like', 'customers.last_name', $this->customer_id]]);
         $query->andFilterWhere(['like', 'job_posts.job_title', $this->job_post_id]);
         $query->andFilterWhere(['like', 'application_statuses.status', $this->application_status_id]);

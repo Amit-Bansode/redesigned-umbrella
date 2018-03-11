@@ -16,16 +16,17 @@ namespace backend\components;
 
 use yii\base\Component;
 use yii;
+
 class CommonComponent extends Component {
 
     //put your code here
 
     public function init() {
-        
-        Yii::$app->view->params['arrmixReturnNotification'] = \app\models\Notifications::fetchNotifications();
+
+        Yii::$app->view->params['arrmixReturnNotification'] = \backend\models\Notifications::fetchNotifications();
         parent::init();
     }
-    
+
     public function createUniqueJobId($intJobType, $intId = null) {
 
         if (TRUE == is_null($intId)) {
@@ -58,7 +59,7 @@ class CommonComponent extends Component {
         $objChangeLogModel->save();
     }
 
-    public function getuPloadedFiles($strCustomerUniqueId) {
+    public function getUploadedFiles($strCustomerUniqueId) {
         $root = (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'] . '/';
         $root .= 'redesigned-umbrella/';
 

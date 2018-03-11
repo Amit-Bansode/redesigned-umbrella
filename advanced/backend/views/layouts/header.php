@@ -29,7 +29,7 @@ $notifications = $this->params['arrmixReturnNotification'];
                             <span class="label label-warning"><?= $notifications['count']; ?></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li class="header">You have <?= $notifications['count']; ?> notifications</li>
+                            <li class="header">You have <?= $notifications['count']; ?> notification(s) today.</li>
                             <li>
                                 <!-- inner menu: contains the actual data -->
                                 <ul class="menu">
@@ -61,7 +61,7 @@ $notifications = $this->params['arrmixReturnNotification'];
 
                                 </ul>
                             </li>
-                            <!--<li class="footer"><a href="#">View all</a></li>-->
+                            <li class="footer"><a href="?r=notifications">View all</a></li>
                         </ul>
                     </li>
 

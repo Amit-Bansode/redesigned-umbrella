@@ -1,12 +1,13 @@
 <?php
 
-namespace app\models;
+namespace backend\models;
 
 use Yii;
 
 /**
  * This is the model class for table "notifications".
  *
+ * @property int $id
  * @property int $notification_type_id
  * @property string $notification
  * @property int $is_read
@@ -15,11 +16,6 @@ use Yii;
  * @property NotificationTypes $notificationType
  */
 class Notifications extends \yii\db\ActiveRecord {
-
-    public $count;
-    
-    const REGISTRATION = 1;
-    const APPLIED_FOR_JOB = 2;
 
     /**
      * @inheritdoc
@@ -47,7 +43,8 @@ class Notifications extends \yii\db\ActiveRecord {
      */
     public function attributeLabels() {
         return [
-            'notification_type_id' => Yii::t('app', 'Notification Type ID'),
+            'id' => Yii::t('app', 'ID'),
+            'notification_type_id' => Yii::t('app', 'Notification Type'),
             'notification' => Yii::t('app', 'Notification'),
             'is_read' => Yii::t('app', 'Is Read'),
             'created_on' => Yii::t('app', 'Created On'),
@@ -63,16 +60,16 @@ class Notifications extends \yii\db\ActiveRecord {
 
     public function fetchNotifications() {
 
-        //$notifications = Notifications::findBySql('SELECT count(notification_type_id) AS count, notification_type_id FROM notifications WHERE created_on = CURDATE() GROUP BY notification_type_id, created_on')->all();
-        $notifications = Notifications::findBySql('SELECT count(notification_type_id) AS count, notification_type_id FROM notifications GROUP BY notification_type_id, created_on')->all();
+        $notifications = Notifications::findBySql('SELECT count(notification_type_id) AS count, notification_type_id FROM notifications WHERE created_on = CURDATE() GROUP BY notification_type_id, created_on')->all();
+        //$notifications = Notifications::findBySql('SELECT count(notification_type_id) AS count, notification_type_id FROM notifications GROUP BY notification_type_id, created_on')->all();
         $arrReturnNotification = [];
         $arrReturnNotification['count'] = 0;
 
-        foreach ( $notifications AS $notification ) {
+        foreach ($notifications AS $notification) {
             $arrReturnNotification['count'] += $notification->count;
             $arrReturnNotification[$notification->notification_type_id] = $notification->count;
         }
-        
+
         return $arrReturnNotification;
     }
 

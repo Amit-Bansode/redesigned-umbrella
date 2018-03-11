@@ -5,20 +5,20 @@ namespace backend\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\Customers;
+use backend\models\Notifications;
 
 /**
- * CustomersSearch represents the model behind the search form of `backend\models\Customers`.
+ * NotificationsSearch represents the model behind the search form of `backend\models\Notifications`.
  */
-class CustomersSearch extends Customers {
+class NotificationsSearch extends Notifications {
 
     /**
      * @inheritdoc
      */
     public function rules() {
         return [
-            [['id', 'is_published', 'is_deleted'], 'integer'],
-            [['unique_id', 'username', 'first_name', 'last_name', 'email_address', 'primary_contact_number', 'password', 'updated_on', 'created_on'], 'safe'],
+            [['id', 'notification_type_id'], 'integer'],
+            [['notification', 'is_read', 'created_on'], 'safe'],
         ];
     }
 
@@ -38,7 +38,8 @@ class CustomersSearch extends Customers {
      * @return ActiveDataProvider
      */
     public function search($params) {
-        $query = Customers::find();
+        $query = Notifications::find();
+        $query->joinWith(['notificationType']);
 
         // add conditions that should always apply here
 
@@ -59,19 +60,12 @@ class CustomersSearch extends Customers {
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'is_published' => $this->is_published,
-            'is_deleted' => $this->is_deleted,
-            'updated_on' => $this->updated_on,
+            'notification_type_id' => $this->notification_type_id,
             'created_on' => $this->created_on,
         ]);
 
-        $query->andFilterWhere(['like', 'unique_id', $this->unique_id])
-                ->andFilterWhere(['like', 'username', $this->username])
-                ->andFilterWhere(['like', 'first_name', $this->first_name])
-                ->andFilterWhere(['like', 'last_name', $this->last_name])
-                ->andFilterWhere(['like', 'email_address', $this->email_address])
-                ->andFilterWhere(['like', 'primary_contact_number', $this->primary_contact_number])
-                ->andFilterWhere(['like', 'password', $this->password]);
+        $query->andFilterWhere(['like', 'notification', $this->notification])
+                ->andFilterWhere(['like', 'is_read', $this->is_read]);
 
         return $dataProvider;
     }

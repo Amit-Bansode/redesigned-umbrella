@@ -56,7 +56,7 @@ class AppliedJobsController extends Controller {
                 ->andFilterWhere([ 'id' => $id])
                 ->one();
 
-        $model->documents_uploaded = Yii::$app->common->getuPloadedFiles($model->customers->unique_id);
+        $model->documents_uploaded = Yii::$app->common->getUploadedFiles($model->customers->unique_id);
 
         return $this->render('view', [
                     'model' => $model,
@@ -106,7 +106,7 @@ class AppliedJobsController extends Controller {
 
         $arrMixAppliactionStatus = ArrayHelper::map($arrobjApplicationStatuses, 'id', 'status');
 
-        $model->documents_uploaded = Yii::$app->common->getuPloadedFiles($model->customers->unique_id);
+        $model->documents_uploaded = Yii::$app->common->getUploadedFiles($model->customers->unique_id);
 
         return $this->render('update', [
                     'model' => $model,

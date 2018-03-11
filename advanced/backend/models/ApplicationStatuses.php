@@ -12,21 +12,19 @@ use Yii;
  *
  * @property AppliedJobs[] $appliedJobs
  */
-class ApplicationStatuses extends \yii\db\ActiveRecord
-{
+class ApplicationStatuses extends \yii\db\ActiveRecord {
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'application_statuses';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['status'], 'required'],
             [['status'], 'string', 'max' => 20],
@@ -36,8 +34,7 @@ class ApplicationStatuses extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => Yii::t('app', 'ID'),
             'status' => Yii::t('app', 'Status'),
@@ -47,8 +44,8 @@ class ApplicationStatuses extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getAppliedJobs()
-    {
+    public function getAppliedJobs() {
         return $this->hasMany(AppliedJobs::className(), ['application_status_id' => 'id']);
     }
+
 }
